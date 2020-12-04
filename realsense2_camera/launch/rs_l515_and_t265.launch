@@ -48,7 +48,6 @@
   </group>
 
   <group if="$(arg USE_T265)">
-
     <node pkg="jsk_robot_startup" type="CameraToBaseOffset.py" name="$(arg camera1)_to_base_offset"
           output="screen" respawn="true">
       <remap from="~source_odom" to="$(arg rs_odom_raw)" />
@@ -60,6 +59,13 @@
       <param name="~odom_frame"   value="$(arg rs_odom_frame_id)"/>
       <param name="~publish_tf"   value="true" />
       <param name="~invert_tf"    value="false" />
+    </node>
+
+    <node pkg="jsk_robot_startup" type="odom_ground_publisher.py" name="odom_ground_publisher"
+          output="screen" respawn="true">
+      <param name="~odom_frame"         value="$(arg rs_odom_frame_id)"/>
+      <param name="~odom_ground_frame"  value="odom_ground"/>
+      <param name="~rate"               value="1000"/>
     </node>
   </group>
 
