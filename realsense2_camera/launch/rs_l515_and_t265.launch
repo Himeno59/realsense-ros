@@ -11,8 +11,10 @@
   <arg name="tf_prefix_camera2"         default="$(arg camera2)"/>
   <arg name="initial_reset"             default="false"/>
   <arg name="enable_fisheye"            default="false"/>
-  <arg name="color_width"               default="1280"/>
-  <arg name="color_height"              default="720"/>
+  <!-- <arg name="color_width"               default="1280"/> -->
+  <!-- <arg name="color_height"              default="720"/> -->
+  <arg name="color_width"               default="960"/>
+  <arg name="color_height"              default="540"/>  
   <arg name="depth_width"               default="640"/>
   <arg name="depth_height"              default="480"/>
   <arg name="clip_distance"             default="-2"/>
@@ -28,7 +30,7 @@
   <arg name="rs_odom_frame_id"          default="rs_t265_odom"/>
   <arg name="rs_odom_raw"               default="/$(arg camera1)/odom/sample"/>
   <arg name="rs_odom"                   default="/rs_odom"/>
-
+  
   <group ns="$(arg camera1)" if="$(arg USE_T265)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="device_type"           value="$(arg device_type_camera1)"/>
@@ -98,7 +100,9 @@
   <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.14862 0.0 -0.014429 0 0.5236 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" /> ## first version camera mount -->
   <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.14547 0.0 -0.03994 0 0.7854 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount -->
   <!-- modified by matsuura 2020/12/8 -->  
-<node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.140 0.0 -0.01 0 0.79 0.0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount  
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.140 0.0 -0.01 0 0.79 0.0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.140 0.0 -0.015 0 0.785 0.02 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount ## 2020/12/24 edit -->
+  <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.140 0.0 -0.015 0 0.785 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount ## 2021/01/06 edit  
   <node pkg="tf" type="static_transform_publisher" name="head_link1_to_t265" args="0.1459 0.00775 0.0085 0 0 0 /HEAD_LINK1 /$(arg tf_prefix_camera1)_link 100" if="$(arg USE_T265)"/> ## second version camera mount
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_camera)/rviz/l515_and_t265.rviz" if="$(arg rviz)" />
