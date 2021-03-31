@@ -1,8 +1,10 @@
 <launch>
   <arg name="device_type_camera1"       default="t265"/>
   <arg name="device_type_camera2"       default="l515"/>
-  <arg name="serial_no_camera1"         default="845412111597"/>
+  <!-- <arg name="serial_no_camera1"         default="845412111597"/> -->
+  <arg name="serial_no_camera1"         default=""/>
   <arg name="serial_no_camera2"         default="f0211447"/>
+  <!-- <arg name="serial_no_camera2"         default=""/>  -->
   <arg name="camera1"                   default="rs_t265"/>
   <arg name="camera2"                   default="rs_l515"/>
   <arg name="tf_prefix_camera1"         default="$(arg camera1)"/>
@@ -65,8 +67,15 @@
           output="screen" respawn="true">
       <param name="~odom_frame"         value="$(arg rs_odom_frame_id)"/>
       <param name="~odom_ground_frame"  value="odom_ground"/>
-      <param name="~rate"               value="1000"/>
+      <param name="~rate"               value="100"/>
     </node>
+
+    <!-- <node pkg="jsk_robot_startup" type="body_on_odom_publisher.py" name="body_on_odom_publisher" -->
+    <!--       output="screen" respawn="true"> -->
+    <!--   <param name="~robot_frame"        value="BODY"/> -->
+    <!--   <param name="~odom_ground_frame"  value="odom_ground"/> -->
+    <!--   <param name="~rate"               value="100"/> -->
+    <!-- </node> -->
   </group>
 
   <group ns="$(arg camera2)" if="$(arg USE_L515)">
@@ -87,7 +96,9 @@
 
   <!-- <node pkg="tf" type="static_transform_publisher" name="t265_to_l515" args="0 0 0 0 0 0 /$(arg tf_prefix_camera1)_link /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_T265)"/> -->
   <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.14862 0.0 -0.014429 0 0.5236 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" /> ## first version camera mount -->
-  <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.14547 0.0 -0.03994 0 0.7854 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.14547 0.0 -0.03994 0 0.7854 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount -->
+  <!-- modified by matsuura 2020/12/8 -->  
+<node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.140 0.0 -0.01 0 0.79 0.0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount  
   <node pkg="tf" type="static_transform_publisher" name="head_link1_to_t265" args="0.1459 0.00775 0.0085 0 0 0 /HEAD_LINK1 /$(arg tf_prefix_camera1)_link 100" if="$(arg USE_T265)"/> ## second version camera mount
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find realsense2_camera)/rviz/l515_and_t265.rviz" if="$(arg rviz)" />
