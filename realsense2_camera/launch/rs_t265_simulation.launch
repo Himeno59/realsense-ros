@@ -1,0 +1,22 @@
+<launch>
+  <node pkg="jsk_robot_startup" type="CameraToBaseOffset.py" name="rs_t265_to_base_offset"
+        output="screen" respawn="true">
+    <remap from="~source_odom" to="rs_t265/odom/sample" />
+    <remap from="~init_signal" to="/odom_init_trigger" />
+    <remap from="~output" to="/rs_odom" />
+    <param name="~rate" value="100" />
+    <param name="~base_link_frame" value="BODY" />
+    <param name="~camera_frame" value="rs_t265_link"/>
+    <param name="~odom_frame"   value="rs_t265_odom"/>
+    <param name="~publish_tf"   value="true" />
+    <param name="~invert_tf"    value="false" />
+  </node>
+  <node pkg="jsk_robot_startup" type="odom_ground_publisher.py" name="odom_ground_publisher"
+        output="screen" respawn="true">
+    <param name="~odom_frame"         value="rs_t265_odom"/>
+    <param name="~odom_ground_frame"  value="odom_ground"/>
+    <param name="~rate"               value="100"/>
+  </node>
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_l515" args="0.140 0.0 -0.015 0 0.785 0 /HEAD_LINK1 /rs_l515_link 100"/> --> ## second version camera mount ## 2021/01/06 edit
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_t265" args="0.1459 0.00775 0.0085 0 0 0 /HEAD_LINK1 /rs_t265_link 100"/> --> ## second version camera mount
+</launch>
