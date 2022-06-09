@@ -72,6 +72,12 @@
       <param name="~rate"               value="100"/>
     </node>
 
+    <node pkg="realsense2_camera" type="rs_t265_confidence_viewer.py" name="rs_t265_confidence_viewer"
+          output="screen" respawn="true">
+      <param name="~input"              value="$(arg rs_odom_raw)"/>
+      <param name="~odom_ground_frame"  value="odom_ground"/>
+    </node>
+
     <!-- <node pkg="jsk_robot_startup" type="body_on_odom_publisher.py" name="body_on_odom_publisher" -->
     <!--       output="screen" respawn="true"> -->
     <!--   <param name="~robot_frame"        value="BODY"/> -->
