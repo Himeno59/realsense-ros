@@ -1,0 +1,107 @@
+<launch>
+  <arg name="device_type_camera1"       default="t265"/>
+  <arg name="device_type_camera2"       default="d455"/>
+  <!-- <arg name="serial_no_camera1"         default="845412111597"/> -->
+  <arg name="serial_no_camera1"         default=""/>
+  <arg name="serial_no_camera2"         default=""/>
+  <!-- <arg name="serial_no_camera2"         default=""/>  -->
+  <arg name="camera1"                   default="rs_t265"/>
+  <arg name="camera2"                   default="rs_l515"/>
+  <arg name="tf_prefix_camera1"         default="$(arg camera1)"/>
+  <arg name="tf_prefix_camera2"         default="$(arg camera2)"/>
+  <arg name="initial_reset"             default="false"/>
+  <arg name="enable_fisheye"            default="false"/>
+  <!-- <arg name="color_width"               default="1280"/> -->
+  <!-- <arg name="color_height"              default="720"/> -->
+  <arg name="color_width"               default="960"/>
+  <arg name="color_height"              default="540"/>  
+  <arg name="depth_width"               default="640"/>
+  <arg name="depth_height"              default="480"/>
+  <arg name="clip_distance"             default="-2"/>
+  <arg name="topic_odom_in"             default="odom_in"/>
+  <arg name="calib_odom_file"           default=""/>
+  <arg name="rviz"                      default="false" />
+
+  <arg name="USE_L515"                  default="true" />
+  <arg name="USE_T265"                  default="true" />
+  <arg name="base_link_frame_id"        default="BODY" />
+  <arg name="sensor_frame_id"           default="$(arg tf_prefix_camera1)_link"/>
+
+  <arg name="rs_odom_frame_id"          default="rs_t265_odom"/>
+  <arg name="rs_odom_raw"               default="/$(arg camera1)/odom/sample"/>
+  <arg name="rs_odom"                   default="/rs_odom"/>
+  
+  <group ns="$(arg camera1)" if="$(arg USE_T265)">
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="device_type"           value="$(arg device_type_camera1)"/>
+      <arg name="serial_no"             value="$(arg serial_no_camera1)"/>
+      <arg name="tf_prefix"             value="$(arg tf_prefix_camera1)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="enable_fisheye1"       value="$(arg enable_fisheye)"/>
+      <arg name="enable_fisheye2"       value="$(arg enable_fisheye)"/>
+      <arg name="topic_odom_in"         value="$(arg topic_odom_in)"/>
+      <arg name="calib_odom_file"       value="$(arg calib_odom_file)"/>
+      <arg name="enable_pose"           value="true"/>
+      <arg name="pose_frame_id"         value="$(arg sensor_frame_id)"/>
+      <arg name="odom_frame_id"         value="$(arg rs_odom_frame_id)"/>
+      <arg name="publish_odom_tf"       value="false"/>
+      <!-- publish odom tf by CameraToBaseOffset using odom topic
+           since camera_link is not same as base_link -->
+      <arg name="publish_tf"            value="false"/>
+    </include>
+  </group>
+
+  <group if="$(arg USE_T265)">
+    <node pkg="jsk_robot_startup" type="CameraToBaseOffset.py" name="$(arg camera1)_to_base_offset"
+          output="screen" respawn="true">
+      <remap from="~source_odom" to="$(arg rs_odom_raw)" />
+      <remap from="~init_signal" to="/odom_init_trigger" />
+      <remap from="~output" to="$(arg rs_odom)" />
+      <param name="~rate" value="100" />
+      <param name="~base_link_frame" value="$(arg base_link_frame_id)" />
+      <param name="~camera_frame" value="$(arg sensor_frame_id)"/>
+      <param name="~odom_frame"   value="$(arg rs_odom_frame_id)"/>
+      <param name="~publish_tf"   value="true" />
+      <param name="~invert_tf"    value="false" />
+    </node>
+
+    <node pkg="jsk_robot_startup" type="odom_ground_publisher.py" name="odom_ground_publisher"
+          output="screen" respawn="true">
+      <param name="~odom_frame"         value="$(arg rs_odom_frame_id)"/>
+      <param name="~odom_ground_frame"  value="odom_ground"/>
+      <param name="~rate"               value="100"/>
+    </node>
+
+    <!-- <node pkg="jsk_robot_startup" type="body_on_odom_publisher.py" name="body_on_odom_publisher" -->
+    <!--       output="screen" respawn="true"> -->
+    <!--   <param name="~robot_frame"        value="BODY"/> -->
+    <!--   <param name="~odom_ground_frame"  value="odom_ground"/> -->
+    <!--   <param name="~rate"               value="100"/> -->
+    <!-- </node> -->
+  </group>
+
+  <group ns="$(arg camera2)" if="$(arg USE_L515)">
+    <param name="rgb_camera/global_time_enabled" value="true"/>
+    <param name="l500_depth_sensor/global_time_enabled" value="true"/>
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="device_type"           value="$(arg device_type_camera2)"/>
+      <arg name="serial_no"             value="$(arg serial_no_camera2)"/>
+      <arg name="tf_prefix"             value="$(arg tf_prefix_camera2)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="align_depth"           value="false"/>
+      <arg name="filters"               value="spatial,temporal,pointcloud"/>
+      <arg name="color_width"           value="$(arg color_width)"/>
+      <arg name="color_height"          value="$(arg color_height)"/>
+      <arg name="depth_width"           value="$(arg depth_width)"/>
+      <arg name="depth_height"          value="$(arg depth_height)"/>
+      <!-- <arg name="color_fps"             value="30"/> -->
+      <!-- <arg name="depth_fps"             value="30"/> -->
+      <arg name="clip_distance"         value="$(arg clip_distance)"/>
+    </include>
+  </group>
+
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.140 0.0 -0.020 0 0.805 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> --> ## second version camera mount ## 2021/01/06 edit 
+  <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.14543 0.0475 0.0 -0.05 0.780 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount ## 2022/07/04 edit  0.805 2022/12/04
+  <node pkg="tf" type="static_transform_publisher" name="head_link1_to_t265" args="0.1459 0.00775 0.0085 0 0 0 /HEAD_LINK1 /$(arg tf_prefix_camera1)_link 100" if="$(arg USE_T265)"/> ## second version camera mount
+
+</launch>
