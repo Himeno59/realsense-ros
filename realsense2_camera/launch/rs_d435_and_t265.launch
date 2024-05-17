@@ -1,3 +1,4 @@
+<!-- -*- mode: xml -*- --><!-- -*- mode: xml -*- -->
 <launch>
   <arg name="device_type_camera1"       default="t265"/>
   <arg name="device_type_camera2"       default="d455"/>
@@ -13,8 +14,8 @@
   <arg name="enable_fisheye"            default="false"/>
   <!-- <arg name="color_width"               default="1280"/> -->
   <!-- <arg name="color_height"              default="720"/> -->
-  <arg name="color_width"               default="960"/>
-  <arg name="color_height"              default="540"/>  
+  <arg name="color_width"               default="640"/>
+  <arg name="color_height"              default="480"/>  
   <arg name="depth_width"               default="640"/>
   <arg name="depth_height"              default="480"/>
   <arg name="clip_distance"             default="-2"/>
@@ -30,6 +31,10 @@
   <arg name="rs_odom_frame_id"          default="rs_t265_odom"/>
   <arg name="rs_odom_raw"               default="/$(arg camera1)/odom/sample"/>
   <arg name="rs_odom"                   default="/rs_odom"/>
+
+  <arg name="color_fps"                 default="30"/>
+  <arg name="depth_fps"                 default="30"/>
+    
   
   <group ns="$(arg camera1)" if="$(arg USE_T265)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
@@ -94,8 +99,8 @@
       <arg name="color_height"          value="$(arg color_height)"/>
       <arg name="depth_width"           value="$(arg depth_width)"/>
       <arg name="depth_height"          value="$(arg depth_height)"/>
-      <!-- <arg name="color_fps"             value="30"/> -->
-      <!-- <arg name="depth_fps"             value="30"/> -->
+      <arg name="color_fps"             value="$(arg color_fps)"/>
+      <arg name="depth_fps"             value="$(arg depth_fps)"/>
       <arg name="clip_distance"         value="$(arg clip_distance)"/>
     </include>
   </group>
