@@ -105,7 +105,7 @@
     </include>
   </group>
 
-  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.140 0.0 -0.020 0 0.805 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> --> ## second version camera mount ## 2021/01/06 edit 
+  <!-- <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.140 0.0 -0.020 0 0.805 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> --> ## second version camera mount ## 2021/01/06 edit
   <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.14543 0.0475 0.0 -0.05 0.780 0 /HEAD_LINK1 /$(arg tf_prefix_camera2)_link 100" if="$(arg USE_L515)"/> ## second version camera mount ## 2022/07/04 edit  0.805 2022/12/04
   <node pkg="tf" type="static_transform_publisher" name="head_link1_to_t265" args="0.1459 0.00775 0.0085 0 0 0 /HEAD_LINK1 /$(arg tf_prefix_camera1)_link 100" if="$(arg USE_T265)"/> ## second version camera mount
 
