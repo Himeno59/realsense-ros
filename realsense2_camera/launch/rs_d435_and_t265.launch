@@ -35,7 +35,6 @@
   <arg name="color_fps"                 default="30"/>
   <arg name="depth_fps"                 default="30"/>
     
-  
   <group ns="$(arg camera1)" if="$(arg USE_T265)">
     <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
       <arg name="device_type"           value="$(arg device_type_camera1)"/>
@@ -93,8 +92,8 @@
       <arg name="serial_no"             value="$(arg serial_no_camera2)"/>
       <arg name="tf_prefix"             value="$(arg tf_prefix_camera2)"/>
       <arg name="initial_reset"         value="$(arg initial_reset)"/>
-      <arg name="align_depth"           value="false"/>
-      <arg name="filters"               value="spatial,temporal,pointcloud"/>
+      <arg name="align_depth"           value="true"/> 
+      <arg name="filters"               value="temporal,pointcloud"/> <!-- decimationは入れない -->  
       <arg name="color_width"           value="$(arg color_width)"/>
       <arg name="color_height"          value="$(arg color_height)"/>
       <arg name="depth_width"           value="$(arg depth_width)"/>
