@@ -1,0 +1,46 @@
+<!-- -*- mode: xml -*- --><!-- -*- mode: xml -*- -->
+<launch>
+  <arg name="external_manager"          default="true"/>
+  <arg name="manager"                   default="manager"/>
+  <arg name="device_type_camera"        default="d455"/>
+  <arg name="serial_no_camera"          default=""/>
+  <arg name="camera"                    default="rs_l515"/> ## ここは変更しない
+  <arg name="tf_prefix_camera"          default="$(arg camera)"/>
+  <arg name="initial_reset"             default="false"/>
+  <arg name="align_depth"               default="true"/>
+  <arg name="filters"                   default="temporal"/> ## decimationは入れない
+  <arg name="color_width"               default="640"/>
+  <arg name="color_height"              default="360"/>
+  <arg name="color_fps"                 default="90"/>
+  <arg name="depth_width"               default="848"/>
+  <arg name="depth_height"              default="480"/>
+  <arg name="depth_fps"                 default="90"/>
+  <arg name="clip_distance"             default="-2"/>
+
+  <arg name="namespace"                 default="$(arg camera)"/>
+
+  <group ns="$(arg namespace)">
+    <param name="rgb_camera/global_time_enabled" value="true"/>
+    <param name="l500_depth_sensor/global_time_enabled" value="true"/>
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="external_manager"      value="$(arg external_manager)"/>
+      <arg name="manager"               value="$(arg manager)" if="$(arg external_manager)"/>
+      <arg name="device_type"           value="$(arg device_type_camera)"/>
+      <arg name="serial_no"             value="$(arg serial_no_camera)"/>
+      <arg name="tf_prefix"             value="$(arg tf_prefix_camera)"/>
+      <arg name="initial_reset"         value="$(arg initial_reset)"/>
+      <arg name="align_depth"           value="$(arg align_depth)"/> 
+      <arg name="filters"               value="$(arg filters)"/> 
+      <arg name="color_width"           value="$(arg color_width)"/>
+      <arg name="color_height"          value="$(arg color_height)"/>
+      <arg name="depth_width"           value="$(arg depth_width)"/>
+      <arg name="depth_height"          value="$(arg depth_height)"/>
+      <arg name="color_fps"             value="$(arg color_fps)"/>
+      <arg name="depth_fps"             value="$(arg depth_fps)"/>
+      <arg name="clip_distance"         value="$(arg clip_distance)"/>
+    </include>
+  </group>
+  
+  <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.14543 0.0475 0.0 -0.05 0.780 0 /HEAD_LINK1 /$(arg tf_prefix_camera)_link 100"/> ## second version camera mount ## 2022/07/04 edit  0.805 2022/12/04
+  
+</launch>
