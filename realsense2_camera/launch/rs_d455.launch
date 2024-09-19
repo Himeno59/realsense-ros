@@ -8,14 +8,16 @@
   <arg name="tf_prefix_camera"          default="$(arg camera)"/>
   <arg name="initial_reset"             default="false"/>
   <arg name="align_depth"               default="true"/>
-  <arg name="filters"                   default="temporal"/> ## decimationは入れない
+  <arg name="filters"                   default="disparity,decimation,spatial"/>
   <arg name="color_width"               default="640"/>
   <arg name="color_height"              default="360"/>
   <arg name="color_fps"                 default="90"/>
   <arg name="depth_width"               default="848"/>
   <arg name="depth_height"              default="480"/>
   <arg name="depth_fps"                 default="90"/>
-  <arg name="clip_distance"             default="-2"/>
+  <arg name="clip_distance"             default="-1"/> ## ここを調整するとバウンド時の影部分を消せるかも知れない 負の値を入れると除去しなくなる
+
+  <arg name="enable_sync"               default="true"/>
 
   <arg name="namespace"                 default="$(arg camera)"/>
 
@@ -38,6 +40,7 @@
       <arg name="color_fps"             value="$(arg color_fps)"/>
       <arg name="depth_fps"             value="$(arg depth_fps)"/>
       <arg name="clip_distance"         value="$(arg clip_distance)"/>
+      <arg name="enable_sync"           value="$(arg enable_sync)"/>
     </include>
   </group>
   
