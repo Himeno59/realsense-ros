@@ -4,11 +4,11 @@
   <arg name="manager"                   default="manager"/>
   <arg name="device_type_camera"        default="d455"/>
   <arg name="serial_no_camera"          default=""/>
-  <arg name="camera"                    default="rs_l515"/> ## ここは変更しない
+  <arg name="camera"                    default="rs_d455"/>
   <arg name="tf_prefix_camera"          default="$(arg camera)"/>
   <arg name="initial_reset"             default="false"/>
   <arg name="align_depth"               default="true"/>
-  <arg name="filters"                   default="disparity,decimation,spatial"/>
+  <arg name="filters"                   default="disparity,decimation"/>
   <arg name="color_width"               default="640"/>
   <arg name="color_height"              default="360"/>
   <arg name="color_fps"                 default="90"/>
@@ -44,6 +44,6 @@
     </include>
   </group>
   
-  <node pkg="tf" type="static_transform_publisher" name="head_link1_to_d455" args="0.14543 0.0475 0.0 -0.05 0.780 0 /HEAD_LINK1 /$(arg tf_prefix_camera)_link 100"/> ## second version camera mount ## 2022/07/04 edit  0.805 2022/12/04
+  <!-- <node pkg="tf" type="static_transform_publisher" name="rleg_link5_to_d455" args="0.14543 0.0475 0.0 -0.05 0.780 0 /RLEG_LINK5 /$(arg tf_prefix_camera)_link 100"/> ## mounted on foot plate 2024/09/24 -->
   
 </launch>
