@@ -1,6 +1,6 @@
 <!-- -*- mode: xml -*- --><!-- -*- mode: xml -*- -->
 <launch>
-  <arg name="external_manager"          default="true"/>
+  <arg name="external_manager"          default="false"/>
   <arg name="manager"                   default="manager"/>
   <arg name="device_type_camera"        default="d455"/>
   <arg name="serial_no_camera"          default=""/>
@@ -17,7 +17,7 @@
   <arg name="depth_fps"                 default="90"/>
   <arg name="clip_distance"             default="-1"/> ## ここを調整するとバウンド時の影部分を消せるかも知れない 負の値を入れると除去しなくなる
 
-  <arg name="enable_sync"               default="true"/>
+  <arg name="enable_sync"               default="true"/> ## colorとdepthのstampを合わせてくれる
 
   <arg name="namespace"                 default="$(arg camera)"/>
 
@@ -44,6 +44,6 @@
     </include>
   </group>
   
-  <!-- <node pkg="tf" type="static_transform_publisher" name="rleg_link5_to_d455" args="0.14543 0.0475 0.0 -0.05 0.780 0 /RLEG_LINK5 /$(arg tf_prefix_camera)_link 100"/> ## mounted on foot plate 2024/09/24 -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="rleg_link5_to_d455" args="0.11925 -0.0825 -0.06877 0.92718 0 0.374602 0 /RLEG_LINK5 /$(arg tf_prefix_camera)_link 1"/> ## mounted on foot plate 2024/09/24 -->
   
 </launch>
