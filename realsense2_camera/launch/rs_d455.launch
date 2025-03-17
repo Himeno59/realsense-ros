@@ -11,12 +11,11 @@
   <arg name="filters"                   default="disparity,decimation"/>
   <arg name="color_width"               default="640"/>
   <arg name="color_height"              default="360"/>
-  <arg name="color_fps"                 default="90"/>
   <arg name="depth_width"               default="848"/>
   <arg name="depth_height"              default="480"/>
+  <arg name="color_fps"                 default="90"/>
   <arg name="depth_fps"                 default="90"/>
-  <arg name="clip_distance"             default="-1"/> ## ここを調整するとバウンド時の影部分を消せるかも知れない 負の値を入れると除去しなくなる
-
+  <arg name="clip_distance"             default="-1"/>
   <arg name="enable_sync"               default="true"/> ## colorとdepthのstampを合わせてくれる
 
   <arg name="namespace"                 default="$(arg camera)"/>
@@ -43,7 +42,5 @@
       <arg name="enable_sync"           value="$(arg enable_sync)"/>
     </include>
   </group>
-  
-  <!-- <node pkg="tf" type="static_transform_publisher" name="rleg_link5_to_d455" args="0.11925 -0.0825 -0.06877 0.92718 0 0.374602 0 /RLEG_LINK5 /$(arg tf_prefix_camera)_link 1"/> ## mounted on foot plate 2024/09/24 -->
   
 </launch>
